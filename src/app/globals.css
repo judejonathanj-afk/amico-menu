@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf6f0;
+  --foreground: #2c1810;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+@keyframes menu-bg-flow {
+  0%,
+  100% {
+    transform: scale(1.08) translateY(0);
+  }
+  50% {
+    transform: scale(1.12) translateY(-1.5%);
+  }
+}
+
+.menu-bg-image {
+  animation: menu-bg-flow 18s ease-in-out infinite;
+  background-image: url("/amico-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 28%;
+}
+
+@media (min-width: 640px) {
+  .menu-bg-image {
+    background-position: center 35%;
+  }
+}
+
+.language-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 0.85rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Panneau langues natif <details> */
+.language-picker-summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+details[open] > summary {
+  background-color: rgba(255, 255, 255, 0.4);
+}

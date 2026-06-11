@@ -19,12 +19,13 @@ const cardClass =
   "rounded-2xl border border-white/60 bg-white/88 backdrop-blur-md shadow-lg shadow-stone-900/5 p-5";
 
 type Props = {
+  slug: string;
   locale: Locale;
   menu: MenuData;
   onLocaleChange?: (locale: Locale) => void;
 };
 
-export function MenuView({ locale, menu, onLocaleChange }: Props) {
+export function MenuView({ slug, locale, menu, onLocaleChange }: Props) {
   const grouped = menu.categories.reduce<Record<string, MenuCategory[]>>(
     (acc, cat) => {
       const key = cat.groupLabel ?? cat.name;
@@ -49,7 +50,11 @@ export function MenuView({ locale, menu, onLocaleChange }: Props) {
           <h1 className="font-serif text-3xl tracking-wide text-white mt-1 sm:text-4xl">
             {menu.name}
           </h1>
-          <LanguagePicker locale={locale} onLocaleChange={onLocaleChange} />
+          <LanguagePicker
+            slug={slug}
+            locale={locale}
+            onLocaleChange={onLocaleChange}
+          />
           <p className="text-sm text-blue-100/90 mt-1">
             {tUi("menuSubtitle", locale)}
           </p>

@@ -11,6 +11,17 @@ function menuPath(slug: string, locale: Locale) {
   return locale === "fr" ? `/menu/${slug}` : `/menu/${slug}?lang=${locale}`;
 }
 
+function resolveMenu(
+  slug: string,
+  frenchMenu: MenuData,
+  locale: Locale
+): MenuData {
+  if (locale === "fr") return frenchMenu;
+  const cached = readMenuCache(slug, locale, frenchMenu.menuVersion);
+  if (cached) return cached;
+  return translateMenuSync(frenchMenu, locale);
+}
+
 type Props = {
   slug: string;
   initialLocale: Locale;
@@ -31,41 +42,19 @@ export function MenuShell({
 
   useEffect(() => {
     setLocale(initialLocale);
-    setMenu(initialMenu);
-  }, [initialLocale, initialMenu]);
-
-  useEffect(() => {
-    if (locale === "fr") {
-      setMenu(frenchMenu);
-      return;
-    }
-    const cached = readMenuCache(slug, locale, frenchMenu.menuVersion);
-    if (cached) {
-      setMenu(cached);
-      return;
-    }
-    setMenu(translateMenuSync(frenchMenu, locale));
-  }, [frenchMenu, locale, slug]);
+    setMenu(resolveMenu(slug, frenchMenu, initialLocale));
+  }, [initialLocale, frenchMenu, slug]);
 
   const changeLocale = useCallback(
     (next: Locale) => {
       if (next === localeRef.current) return;
 
+      localeRef.current = next;
       setLocale(next);
+      setMenu(resolveMenu(slug, frenchMenu, next));
       window.history.replaceState(null, "", menuPath(slug, next));
 
-      if (next === "fr") {
-        setMenu(frenchMenu);
-        return;
-      }
-
-      const cached = readMenuCache(slug, next, frenchMenu.menuVersion);
-      if (cached) {
-        setMenu(cached);
-        return;
-      }
-
-      setMenu(translateMenuSync(frenchMenu, next));
+      if (next === "fr") return;
 
       fetch(`/api/menu/${slug}?locale=${next}`, { cache: "force-cache" })
         .then((res) => (res.ok ? res.json() : null))
@@ -97,6 +86,11 @@ export function MenuShell({
   }, [slug, frenchMenu.menuVersion]);
 
   return (
-    <MenuView locale={locale} menu={menu} onLocaleChange={changeLocale} />
+    <MenuView
+      slug={slug}
+      locale={locale}
+      menu={menu}
+      onLocaleChange={changeLocale}
+    />
   );
 }

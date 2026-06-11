@@ -3,7 +3,7 @@ import { tUi } from "@/lib/i18n/ui";
 
 function menuHref(slug: string, code: Locale): string {
   if (code === "fr") return `/menu/${slug}`;
-  return `/menu/${slug}?lang=${code}`;
+  return `/menu/${slug}/${code}`;
 }
 
 type Props = {
@@ -11,21 +11,18 @@ type Props = {
   locale: Locale;
 };
 
-/**
- * Direct links per language — works on iPhone without JavaScript.
- * Native <select> on iOS often changes display without firing onChange.
- */
+/** Plain links — full page load, no JavaScript required (reliable on iPhone). */
 export function LanguagePicker({ slug, locale }: Props) {
   const current = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
 
   return (
-    <div className="mx-auto mt-2 mb-1 w-full max-w-sm px-2">
-      <p className="mb-1.5 text-center text-xs text-blue-100/90">
+    <div className="relative z-[300] mx-auto mt-2 mb-1 w-full max-w-sm px-2 pointer-events-auto">
+      <p className="mb-2 text-center text-xs font-medium text-blue-100">
         {current.flag} {current.label}
       </p>
       <nav
         aria-label={tUi("tapLanguage", locale)}
-        className="flex justify-center gap-1.5 overflow-x-auto py-0.5 [-webkit-overflow-scrolling:touch]"
+        className="flex flex-wrap justify-center gap-2"
       >
         {LOCALES.map((lang) => {
           const active = locale === lang.code;
@@ -36,10 +33,10 @@ export function LanguagePicker({ slug, locale }: Props) {
               title={lang.label}
               aria-label={lang.label}
               aria-current={active ? "page" : undefined}
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-xl no-underline touch-manipulation ${
+              className={`flex min-h-[48px] min-w-[48px] items-center justify-center rounded-full px-3 text-xl no-underline touch-manipulation active:scale-95 ${
                 active
-                  ? "bg-white text-[#2563eb] shadow-md ring-2 ring-white/90"
-                  : "border border-white/40 bg-white/20 text-white"
+                  ? "bg-white text-[#2563eb] shadow-lg ring-2 ring-white"
+                  : "border-2 border-white/60 bg-white/25 text-white"
               }`}
             >
               {lang.flag}

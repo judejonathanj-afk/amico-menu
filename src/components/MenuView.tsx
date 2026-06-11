@@ -42,7 +42,7 @@ export function MenuView({ slug, locale, menu }: Props) {
     >
       <MenuBackground />
       <div className="relative z-10">
-        <header className="relative sticky top-0 z-50 overflow-visible bg-[#2563eb]/95 px-4 pb-4 pt-[max(1.25rem,env(safe-area-inset-top))] text-center shadow-md">
+        <header className="relative sticky top-0 z-50 isolate overflow-visible bg-[#2563eb]/95 px-4 pb-4 pt-[max(1.25rem,env(safe-area-inset-top))] text-center shadow-md">
           <p className="text-[10px] uppercase tracking-[0.35em] text-blue-100 sm:text-[11px]">
             {tUi("restaurantType", locale)}
           </p>

@@ -55,6 +55,7 @@ body {
   appearance: none;
 }
 
-.language-picker-trigger {
+.language-picker-trigger,
+.language-picker-label {
   -webkit-tap-highlight-color: transparent;
 }

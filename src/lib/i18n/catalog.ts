@@ -1072,30 +1072,6 @@ export const CATALOG: Record<string, Dict> = {
     "Gegrilde paprika en mozzarella",
     "Гриль-перец и моцарелла"
   ),
-  "légumes grillés, stracciatella": dict(
-    "légumes grillés, stracciatella",
-    "grilled vegetables, stracciatella",
-    "gegrilltes Gemüse, Stracciatella",
-    "خضروات مشوية، ستراتشiatella",
-    "verdure grigliate, stracciatella",
-    "verduras a la parrilla, stracciatella",
-    "grillade grönsaker, stracciatella",
-    "legumes grelhados, stracciatella",
-    "gegrilde groenten, stracciatella",
-    "гриль-овощи, страчiatella"
-  ),
-  "sauce tomate, capres, basilic": dict(
-    "sauce tomate, capres, basilic",
-    "tomato sauce, capers, basil",
-    "Tomatensauce, Kapern, Basilikum",
-    "صلصة طماطم، كapers، ريحان",
-    "salsa di pomodoro, capperi, basilico",
-    "salsa de tomate, alcaparras, albahaca",
-    "tomatsås, kapris, basilika",
-    "molho de tomate, alcaparras, manjericão",
-    "tomatensaus, kappertjes, basilicum",
-    "томатный соус, каперсы, базилик"
-  ),
   "soft + 2€": dict(
     "soft + 2€",
     "soft + €2",

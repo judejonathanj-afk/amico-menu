@@ -1,11 +1,12 @@
 import { MenuView } from "@/components/MenuView";
 import { MenuLiveSync } from "@/components/MenuLiveSync";
 import { getPublicMenu } from "@/lib/menu";
-import { translateMenuSync } from "@/lib/i18n/translate-menu-sync";
+import { translateMenuServer } from "@/lib/i18n/translate-menu-server";
 import { DEFAULT_LOCALE, isLocale, type Locale } from "@/lib/i18n/locales";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 export default async function MenuPage({
   params,
@@ -23,7 +24,10 @@ export default async function MenuPage({
   }
 
   const locale: Locale = lang && isLocale(lang) ? lang : DEFAULT_LOCALE;
-  const displayMenu = translateMenuSync(frenchMenu, locale);
+  const displayMenu =
+    locale === "fr"
+      ? frenchMenu
+      : await translateMenuServer(frenchMenu, locale);
 
   return (
     <>

@@ -10,6 +10,8 @@ const ICONS: Record<string, string> = {
   Carni: "🥩",
   Desserts: "🍰",
   Dolci: "🍰",
+  "A partager": "🧀",
+  "To share": "🧀",
   "Plats du jour": "✨",
   "Today's specials": "✨",
   "Vin rouge": "🍷",

@@ -22,7 +22,10 @@ async function translateOne(text: string, locale: Locale): Promise<string> {
   const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=fr|${target}`;
 
   try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(8000),
+      next: { revalidate: 86400 },
+    });
     const data = await res.json();
     const translated = data?.responseData?.translatedText?.trim() || text;
     cache.set(cacheKey, translated);
@@ -38,12 +41,19 @@ async function translateBatch(
 ): Promise<Map<string, string>> {
   const map = new Map<string, string>();
   const unique = [...new Set(texts.filter(Boolean))];
+  const batchSize = 4;
 
-  await Promise.all(
-    unique.map(async (text) => {
-      map.set(text, await translateOne(text, locale));
-    })
-  );
+  for (let i = 0; i < unique.length; i += batchSize) {
+    const batch = unique.slice(i, i + batchSize);
+    await Promise.all(
+      batch.map(async (text) => {
+        map.set(text, await translateOne(text, locale));
+      })
+    );
+    if (i + batchSize < unique.length) {
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    }
+  }
 
   return map;
 }

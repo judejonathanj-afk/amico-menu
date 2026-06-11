@@ -43,11 +43,18 @@ export async function POST(request: Request) {
   const unique = [...new Set(texts.filter(Boolean))];
   const map: Record<string, string> = {};
 
-  await Promise.all(
-    unique.map(async (text) => {
-      map[text] = await translateOne(text, locale);
-    })
-  );
+  const batchSize = 4;
+  for (let i = 0; i < unique.length; i += batchSize) {
+    const batch = unique.slice(i, i + batchSize);
+    await Promise.all(
+      batch.map(async (text) => {
+        map[text] = await translateOne(text, locale);
+      })
+    );
+    if (i + batchSize < unique.length) {
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    }
+  }
 
   const translations = texts.map((t) => map[t] ?? t);
   return NextResponse.json({ translations });

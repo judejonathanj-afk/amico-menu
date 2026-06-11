@@ -23,48 +23,95 @@ const MENU: CategorySeed[] = [
     name: "Entrées",
     sortOrder: 1,
     items: [
+      { name: "Burrata des fouilles et tomates", price: 12 },
+      {
+        name: "Salade Del Mar",
+        description: "poulpe, calamar, crevette",
+        price: 14,
+      },
+      {
+        name: "Carpaccio de bresaola",
+        description: "roquette, parmesan",
+        price: 13,
+      },
+      {
+        name: "Jambon de parme",
+        description: "(vitello) croustini ail doux",
+        price: 15,
+      },
+      {
+        name: "Antipasti mixte",
+        description: "légumes grillés, stracciatella",
+        price: 12,
+      },
+      {
+        name: "Arancini",
+        description: "boulette de riz, boeuf, sauce tomate",
+        price: 12,
+      },
+      {
+        name: "Salade caprese de bufala 125g",
+        description: "roquette, tomates, huile d'olive",
+        price: 12,
+      },
+      { name: "Vitello al Tonato", price: 14 },
+    ],
+  },
+  {
+    name: "Pasta di Roma",
+    sortOrder: 2,
+    items: [
       {
         name: "Amatriciana",
-        description: "guanciale, tomates, pecorino romano",
+        description: "guanciale, tomate, pecorino romano",
         price: 17,
       },
       {
         name: "Carbonara",
-        description: "paccheri, œufs, guanciale, parmesan",
+        description: "paccheri, oeuf, guanciale, parmesan",
         price: 17,
       },
       {
-        name: "Cacio e pepe",
-        description: "paccheri, pecorino romano, poivre noir",
+        name: "Caccio e pepe",
+        description: "paccheri, pecorino romano poivre noir",
         price: 16,
       },
     ],
   },
   {
     name: "Spécialités",
-    sortOrder: 2,
+    sortOrder: 3,
     items: [
       {
-        name: "Raviolis ricotta & épinards à la crème de truffe",
+        name: "Raviolis ricotta et épinards",
+        description: "crème de truffe",
         price: 22,
       },
-      { name: "Cavatappi aux figues & foie gras maison", price: 22 },
-      { name: "Linguinis Boscaiola", price: 19 },
-      { name: "Linguinis (calamar, Saint Jacques)", price: 22 },
-      { name: "Poulpe à la Luciana", price: 28 },
+      {
+        name: "Linguinis boscaiola",
+        description: "champignons, ail, persil",
+        price: 19,
+      },
+      {
+        name: "Linguinis en piperade",
+        description: "Gambas, St Jacques",
+        price: 22,
+      },
+      { name: "Cavatapis aux figues et foie gras", price: 22 },
+      { name: "Poulpe à la luciana", price: 28 },
     ],
   },
   {
     name: "Viandes",
-    sortOrder: 3,
+    sortOrder: 4,
     items: [
-      { name: "Pièce de bœuf tranchée", price: 25 },
-      { name: "Tartare de bœuf à l'italienne", price: 19 },
+      { name: "Milanaise de Veau à la Sauge", price: 28 },
+      { name: "Tartare à l'italienne", price: 19 },
     ],
   },
   {
     name: "Desserts",
-    sortOrder: 4,
+    sortOrder: 5,
     items: [
       { name: "Tiramisu café & cacao", price: 9 },
       {
@@ -77,6 +124,46 @@ const MENU: CategorySeed[] = [
         description: "fruits rouges, pistache concassée",
         price: 9,
       },
+    ],
+  },
+  {
+    name: "A partager",
+    sortOrder: 6,
+    items: [
+      {
+        name: "Planche de charcuterie",
+        description: "2 personnes",
+        price: 22,
+      },
+      {
+        name: "Planche de fromages",
+        description: "2 personnes",
+        price: 22,
+      },
+      {
+        name: "Planche mixte",
+        description: "2 personnes",
+        price: 22,
+      },
+      {
+        name: "Jambon de Parme (culatello)",
+        description: "1 personne",
+        price: 15,
+      },
+      {
+        name: "Focaccia ou pinsa",
+        description: "Mortadelle truffée burrata roquette pesto",
+        price: 12,
+      },
+      { name: "Salade de poulpe", price: 14 },
+      { name: "Burrata des Pouilles", price: 12 },
+      { name: "Carpaccio de bresaola", price: 13 },
+      {
+        name: "Antipasti",
+        description: "légumes grillés",
+        price: 12,
+      },
+      { name: "Poivrons grillés mozzarella", price: 14 },
     ],
   },
   {

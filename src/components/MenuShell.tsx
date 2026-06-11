@@ -1,22 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuView } from "./MenuView";
 import type { MenuData } from "@/lib/menu-types";
-import { LOCALES, type Locale } from "@/lib/i18n/locales";
-import { translateMenuSync } from "@/lib/i18n/translate-menu-sync";
+import type { Locale } from "@/lib/i18n/locales";
 import { readMenuCache, writeMenuCache } from "@/lib/i18n/menu-cache";
-
-function resolveMenu(
-  slug: string,
-  frenchMenu: MenuData,
-  locale: Locale
-): MenuData {
-  if (locale === "fr") return frenchMenu;
-  const cached = readMenuCache(slug, locale, frenchMenu.menuVersion);
-  if (cached) return cached;
-  return translateMenuSync(frenchMenu, locale);
-}
 
 type Props = {
   slug: string;
@@ -31,38 +19,37 @@ export function MenuShell({
   frenchMenu,
   initialMenu,
 }: Props) {
-  const [locale, setLocale] = useState(initialLocale);
   const [menu, setMenu] = useState(initialMenu);
 
-  // After navigation (?lang=) or router.refresh(), apply server props
   useEffect(() => {
-    setLocale(initialLocale);
-    setMenu(initialMenu);
-  }, [initialLocale, initialMenu]);
-
-  // Live menu sync: re-translate French updates for current language
-  useEffect(() => {
-    setMenu(resolveMenu(slug, frenchMenu, locale));
-  }, [frenchMenu, slug, locale]);
-
-  const prefetchLocales = useCallback(() => {
-    const version = frenchMenu.menuVersion;
-    for (const { code } of LOCALES) {
-      if (code === "fr") continue;
-      if (readMenuCache(slug, code, version)) continue;
-      fetch(`/api/menu/${slug}?locale=${code}`, { cache: "force-cache" })
-        .then((res) => (res.ok ? res.json() : null))
-        .then((data: MenuData | null) => {
-          if (data) writeMenuCache(slug, code, version, data);
-        })
-        .catch(() => {});
+    if (initialLocale === "fr") {
+      setMenu(frenchMenu);
+      return;
     }
-  }, [slug, frenchMenu.menuVersion]);
 
-  useEffect(() => {
-    const timer = window.setTimeout(prefetchLocales, 400);
-    return () => window.clearTimeout(timer);
-  }, [prefetchLocales]);
+    const version = frenchMenu.menuVersion;
+    const cached = readMenuCache(slug, initialLocale, version);
+    if (cached) {
+      setMenu(cached);
+      return;
+    }
 
-  return <MenuView slug={slug} locale={locale} menu={menu} />;
+    setMenu(initialMenu);
+
+    let cancelled = false;
+    fetch(`/api/menu/${slug}?locale=${initialLocale}`, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: MenuData | null) => {
+        if (cancelled || !data) return;
+        writeMenuCache(slug, initialLocale, version, data);
+        setMenu(data);
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initialLocale, initialMenu, frenchMenu, slug]);
+
+  return <MenuView slug={slug} locale={initialLocale} menu={menu} />;
 }

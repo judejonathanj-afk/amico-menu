@@ -1,6 +1,7 @@
 import { MenuShell } from "@/components/MenuShell";
 import { MenuLiveSync } from "@/components/MenuLiveSync";
 import { getPublicMenu } from "@/lib/menu";
+import { translateMenuServer } from "@/lib/i18n/translate-menu-server";
 import { translateMenuSync } from "@/lib/i18n/translate-menu-sync";
 import { DEFAULT_LOCALE, isLocale, type Locale } from "@/lib/i18n/locales";
 import { notFound } from "next/navigation";
@@ -24,7 +25,11 @@ export default async function MenuPage({
 
   const locale: Locale = lang && isLocale(lang) ? lang : DEFAULT_LOCALE;
   const initialMenu =
-    locale === "fr" ? frenchMenu : translateMenuSync(frenchMenu, locale);
+    locale === "fr"
+      ? frenchMenu
+      : await translateMenuServer(frenchMenu, locale).catch(() =>
+          translateMenuSync(frenchMenu, locale)
+        );
 
   return (
     <>

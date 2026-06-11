@@ -13,33 +13,20 @@ type Props = {
   locale: Locale;
 };
 
-/** Visible native select + form submit — reliable on iPhone (invisible overlay often skips onChange). */
 export function LanguagePicker({ slug, locale }: Props) {
-  function navigateTo(code: string) {
+  function goTo(code: string) {
     if (!isLocale(code) || code === locale) return;
-    window.location.replace(menuHref(slug, code));
+    window.location.href = menuHref(slug, code);
   }
 
   return (
     <div className="mx-auto mt-2 mb-1 flex w-full max-w-xs justify-center px-2">
-      <form
-        action={`/menu/${slug}`}
-        method="get"
-        className="w-full max-w-[14rem]"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const code = new FormData(e.currentTarget).get("lang");
-          if (typeof code === "string") navigateTo(code);
-        }}
-      >
+      <label className="block w-full max-w-[14rem]">
+        <span className="sr-only">{tUi("tapLanguage", locale)}</span>
         <select
-          key={locale}
           name="lang"
-          defaultValue={locale}
-          onChange={(e) => {
-            const code = e.currentTarget.value;
-            navigateTo(code);
-          }}
+          value={locale}
+          onChange={(e) => goTo(e.target.value)}
           aria-label={tUi("tapLanguage", locale)}
           className="language-select block h-11 w-full cursor-pointer rounded-full border border-white/50 bg-white/30 px-4 pr-8 text-center text-sm font-semibold text-white shadow-sm touch-manipulation"
           style={{ fontSize: 16 }}
@@ -50,7 +37,7 @@ export function LanguagePicker({ slug, locale }: Props) {
             </option>
           ))}
         </select>
-      </form>
+      </label>
     </div>
   );
 }

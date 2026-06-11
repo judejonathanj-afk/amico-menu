@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MenuView } from "./MenuView";
 import type { MenuData } from "@/lib/menu-types";
 import { LOCALES, type Locale } from "@/lib/i18n/locales";
@@ -31,19 +31,22 @@ export function MenuShell({
   frenchMenu,
   initialMenu,
 }: Props) {
-  const [locale] = useState(initialLocale);
+  const [locale, setLocale] = useState(initialLocale);
   const [menu, setMenu] = useState(initialMenu);
-  const localeRef = useRef(locale);
-  const frenchMenuRef = useRef(frenchMenu);
-  frenchMenuRef.current = frenchMenu;
 
-  // Live menu sync: keep current language, only refresh menu content
+  // After navigation (?lang=) or router.refresh(), apply server props
   useEffect(() => {
-    setMenu(resolveMenu(slug, frenchMenu, localeRef.current));
-  }, [frenchMenu, slug]);
+    setLocale(initialLocale);
+    setMenu(initialMenu);
+  }, [initialLocale, initialMenu]);
+
+  // Live menu sync: re-translate French updates for current language
+  useEffect(() => {
+    setMenu(resolveMenu(slug, frenchMenu, locale));
+  }, [frenchMenu, slug, locale]);
 
   const prefetchLocales = useCallback(() => {
-    const version = frenchMenuRef.current.menuVersion;
+    const version = frenchMenu.menuVersion;
     for (const { code } of LOCALES) {
       if (code === "fr") continue;
       if (readMenuCache(slug, code, version)) continue;
@@ -54,12 +57,12 @@ export function MenuShell({
         })
         .catch(() => {});
     }
-  }, [slug]);
+  }, [slug, frenchMenu.menuVersion]);
 
   useEffect(() => {
     const timer = window.setTimeout(prefetchLocales, 400);
     return () => window.clearTimeout(timer);
-  }, [prefetchLocales, frenchMenu.menuVersion]);
+  }, [prefetchLocales]);
 
   return <MenuView slug={slug} locale={locale} menu={menu} />;
 }

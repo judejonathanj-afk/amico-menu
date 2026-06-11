@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import { LOCALES, type Locale, isLocale } from "@/lib/i18n/locales";
 import { tUi } from "@/lib/i18n/ui";
 
@@ -14,48 +13,44 @@ type Props = {
   locale: Locale;
 };
 
-/**
- * Native <select> over the visible label — opens the OS picker on mobile.
- * Navigates on change so language sticks on iPhone (client state often resets).
- */
+/** Visible native select + form submit — reliable on iPhone (invisible overlay often skips onChange). */
 export function LanguagePicker({ slug, locale }: Props) {
-  const busyRef = useRef(false);
-  const current = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
-
-  function applyLocale(code: string) {
-    if (!isLocale(code) || code === locale || busyRef.current) return;
-    busyRef.current = true;
-    window.location.assign(menuHref(slug, code));
+  function navigateTo(code: string) {
+    if (!isLocale(code) || code === locale) return;
+    window.location.replace(menuHref(slug, code));
   }
 
   return (
-    <div className="relative z-[200] mx-auto mt-2 mb-1 flex w-full max-w-xs justify-center px-2 pointer-events-auto">
-      <label className="relative inline-flex min-h-[48px] w-full max-w-[14rem] cursor-pointer items-center justify-center gap-2 rounded-full border border-white/50 bg-white/30 px-4 py-2.5 text-sm font-semibold text-white shadow-sm touch-manipulation">
-        <span
-          className="pointer-events-none text-lg leading-none select-none"
-          aria-hidden
-        >
-          {current.flag}
-        </span>
-        <span className="pointer-events-none select-none">{current.label}</span>
-        <span className="pointer-events-none text-xs opacity-90 select-none">
-          ▼
-        </span>
+    <div className="mx-auto mt-2 mb-1 flex w-full max-w-xs justify-center px-2">
+      <form
+        action={`/menu/${slug}`}
+        method="get"
+        className="w-full max-w-[14rem]"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const code = new FormData(e.currentTarget).get("lang");
+          if (typeof code === "string") navigateTo(code);
+        }}
+      >
         <select
-          value={locale}
-          onChange={(e) => applyLocale(e.target.value)}
-          onInput={(e) => applyLocale(e.currentTarget.value)}
+          key={locale}
+          name="lang"
+          defaultValue={locale}
+          onChange={(e) => {
+            const code = e.currentTarget.value;
+            navigateTo(code);
+          }}
           aria-label={tUi("tapLanguage", locale)}
-          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-          style={{ WebkitAppearance: "none", appearance: "none", fontSize: 16 }}
+          className="language-select block h-11 w-full cursor-pointer rounded-full border border-white/50 bg-white/30 px-4 pr-8 text-center text-sm font-semibold text-white shadow-sm touch-manipulation"
+          style={{ fontSize: 16 }}
         >
           {LOCALES.map((lang) => (
-            <option key={lang.code} value={lang.code}>
+            <option key={lang.code} value={lang.code} className="text-stone-900">
               {lang.flag} {lang.label}
             </option>
           ))}
         </select>
-      </label>
+      </form>
     </div>
   );
 }

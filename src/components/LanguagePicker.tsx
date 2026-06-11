@@ -1,6 +1,4 @@
-"use client";
-
-import { LOCALES, type Locale, isLocale } from "@/lib/i18n/locales";
+import { LOCALES, type Locale } from "@/lib/i18n/locales";
 import { tUi } from "@/lib/i18n/ui";
 
 function menuHref(slug: string, code: Locale): string {
@@ -13,31 +11,42 @@ type Props = {
   locale: Locale;
 };
 
+/**
+ * Direct links per language — works on iPhone without JavaScript.
+ * Native <select> on iOS often changes display without firing onChange.
+ */
 export function LanguagePicker({ slug, locale }: Props) {
-  function goTo(code: string) {
-    if (!isLocale(code) || code === locale) return;
-    window.location.href = menuHref(slug, code);
-  }
+  const current = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
 
   return (
-    <div className="mx-auto mt-2 mb-1 flex w-full max-w-xs justify-center px-2">
-      <label className="block w-full max-w-[14rem]">
-        <span className="sr-only">{tUi("tapLanguage", locale)}</span>
-        <select
-          name="lang"
-          value={locale}
-          onChange={(e) => goTo(e.target.value)}
-          aria-label={tUi("tapLanguage", locale)}
-          className="language-select block h-11 w-full cursor-pointer rounded-full border border-white/50 bg-white/30 px-4 pr-8 text-center text-sm font-semibold text-white shadow-sm touch-manipulation"
-          style={{ fontSize: 16 }}
-        >
-          {LOCALES.map((lang) => (
-            <option key={lang.code} value={lang.code} className="text-stone-900">
-              {lang.flag} {lang.label}
-            </option>
-          ))}
-        </select>
-      </label>
+    <div className="mx-auto mt-2 mb-1 w-full max-w-sm px-2">
+      <p className="mb-1.5 text-center text-xs text-blue-100/90">
+        {current.flag} {current.label}
+      </p>
+      <nav
+        aria-label={tUi("tapLanguage", locale)}
+        className="flex justify-center gap-1.5 overflow-x-auto py-0.5 [-webkit-overflow-scrolling:touch]"
+      >
+        {LOCALES.map((lang) => {
+          const active = locale === lang.code;
+          return (
+            <a
+              key={lang.code}
+              href={menuHref(slug, lang.code)}
+              title={lang.label}
+              aria-label={lang.label}
+              aria-current={active ? "page" : undefined}
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-xl no-underline touch-manipulation ${
+                active
+                  ? "bg-white text-[#2563eb] shadow-md ring-2 ring-white/90"
+                  : "border border-white/40 bg-white/20 text-white"
+              }`}
+            >
+              {lang.flag}
+            </a>
+          );
+        })}
+      </nav>
     </div>
   );
 }

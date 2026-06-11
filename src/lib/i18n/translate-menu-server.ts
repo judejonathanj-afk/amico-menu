@@ -5,6 +5,7 @@ import { translateCatalog } from "./catalog";
 import { tUi } from "./ui";
 
 const cache = new Map<string, string>();
+const menuCache = new Map<string, MenuData>();
 
 async function translateOne(text: string, locale: Locale): Promise<string> {
   if (!text.trim() || locale === "fr") return text;
@@ -41,19 +42,23 @@ async function translateBatch(
 ): Promise<Map<string, string>> {
   const map = new Map<string, string>();
   const unique = [...new Set(texts.filter(Boolean))];
-  const batchSize = 4;
+  const needApi: string[] = [];
 
-  for (let i = 0; i < unique.length; i += batchSize) {
-    const batch = unique.slice(i, i + batchSize);
-    await Promise.all(
-      batch.map(async (text) => {
-        map.set(text, await translateOne(text, locale));
-      })
-    );
-    if (i + batchSize < unique.length) {
-      await new Promise((resolve) => setTimeout(resolve, 150));
+  for (const text of unique) {
+    const fromCatalog = translateCatalog(text, locale);
+    if (fromCatalog) {
+      map.set(text, fromCatalog);
+      cache.set(`${locale}:${text}`, fromCatalog);
+    } else {
+      needApi.push(text);
     }
   }
+
+  await Promise.all(
+    needApi.map(async (text) => {
+      map.set(text, await translateOne(text, locale));
+    })
+  );
 
   return map;
 }
@@ -76,6 +81,10 @@ export async function translateMenuServer(
 ): Promise<MenuData> {
   if (locale === "fr") return menu;
 
+  const menuKey = `${menu.slug}:${locale}:${menu.menuVersion}`;
+  const cachedMenu = menuCache.get(menuKey);
+  if (cachedMenu) return cachedMenu;
+
   const unique = new Set<string>();
   for (const cat of menu.categories) {
     unique.add(cat.name);
@@ -92,7 +101,7 @@ export async function translateMenuServer(
 
   const map = await translateBatch([...unique], locale);
 
-  return {
+  const translated = {
     ...menu,
     categories: menu.categories.map((cat) => ({
       ...cat,
@@ -111,4 +120,7 @@ export async function translateMenuServer(
       description: tr(map, s.description),
     })),
   };
+
+  menuCache.set(menuKey, translated);
+  return translated;
 }

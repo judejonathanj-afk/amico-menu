@@ -27,5 +27,9 @@ export async function GET(
   }
 
   const translated = await translateMenuServer(menu, locale);
-  return NextResponse.json(translated);
+  return NextResponse.json(translated, {
+    headers: {
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    },
+  });
 }

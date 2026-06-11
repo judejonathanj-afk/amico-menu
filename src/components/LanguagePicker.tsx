@@ -1,20 +1,14 @@
+"use client";
+
 import { LOCALES, type Locale } from "@/lib/i18n/locales";
 import { tUi } from "@/lib/i18n/ui";
 
-function menuHref(slug: string, code: Locale): string {
-  if (code === "fr") return `/menu/${slug}`;
-  return `/menu/${slug}?lang=${code}`;
-}
-
 type Props = {
-  slug: string;
   locale: Locale;
+  onLocaleChange?: (locale: Locale) => void;
 };
 
-/**
- * Liens HTML + <details> natif — fonctionne sans JavaScript (fiable sur iPhone).
- */
-export function LanguagePicker({ slug, locale }: Props) {
+export function LanguagePicker({ locale, onLocaleChange }: Props) {
   const current = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
 
   return (
@@ -34,9 +28,10 @@ export function LanguagePicker({ slug, locale }: Props) {
             const active = locale === lang.code;
             return (
               <li key={lang.code}>
-                <a
-                  href={menuHref(slug, lang.code)}
-                  className={`flex min-h-[48px] items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-medium touch-manipulation ${
+                <button
+                  type="button"
+                  onClick={() => onLocaleChange?.(lang.code)}
+                  className={`flex w-full min-h-[48px] items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-medium touch-manipulation ${
                     active
                       ? "bg-[#2563eb] text-white"
                       : "bg-stone-100 text-stone-800 active:bg-blue-100"
@@ -44,7 +39,7 @@ export function LanguagePicker({ slug, locale }: Props) {
                 >
                   <span className="text-xl leading-none">{lang.flag}</span>
                   <span className="leading-tight">{lang.label}</span>
-                </a>
+                </button>
               </li>
             );
           })}

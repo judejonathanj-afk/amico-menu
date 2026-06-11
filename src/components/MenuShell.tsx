@@ -7,10 +7,6 @@ import { LOCALES, type Locale } from "@/lib/i18n/locales";
 import { translateMenuSync } from "@/lib/i18n/translate-menu-sync";
 import { readMenuCache, writeMenuCache } from "@/lib/i18n/menu-cache";
 
-function menuPath(slug: string, locale: Locale) {
-  return locale === "fr" ? `/menu/${slug}` : `/menu/${slug}?lang=${locale}`;
-}
-
 function resolveMenu(
   slug: string,
   frenchMenu: MenuData,
@@ -35,62 +31,35 @@ export function MenuShell({
   frenchMenu,
   initialMenu,
 }: Props) {
-  const [locale, setLocale] = useState(initialLocale);
+  const [locale] = useState(initialLocale);
   const [menu, setMenu] = useState(initialMenu);
   const localeRef = useRef(locale);
-  localeRef.current = locale;
+  const frenchMenuRef = useRef(frenchMenu);
+  frenchMenuRef.current = frenchMenu;
 
+  // Live menu sync: keep current language, only refresh menu content
   useEffect(() => {
-    setLocale(initialLocale);
-    setMenu(resolveMenu(slug, frenchMenu, initialLocale));
-  }, [initialLocale, frenchMenu, slug]);
+    setMenu(resolveMenu(slug, frenchMenu, localeRef.current));
+  }, [frenchMenu, slug]);
 
-  const changeLocale = useCallback(
-    (next: Locale) => {
-      if (next === localeRef.current) return;
-
-      localeRef.current = next;
-      setLocale(next);
-      setMenu(resolveMenu(slug, frenchMenu, next));
-      window.history.replaceState(null, "", menuPath(slug, next));
-
-      if (next === "fr") return;
-
-      fetch(`/api/menu/${slug}?locale=${next}`, { cache: "force-cache" })
+  const prefetchLocales = useCallback(() => {
+    const version = frenchMenuRef.current.menuVersion;
+    for (const { code } of LOCALES) {
+      if (code === "fr") continue;
+      if (readMenuCache(slug, code, version)) continue;
+      fetch(`/api/menu/${slug}?locale=${code}`, { cache: "force-cache" })
         .then((res) => (res.ok ? res.json() : null))
         .then((data: MenuData | null) => {
-          if (!data || localeRef.current !== next) return;
-          writeMenuCache(slug, next, frenchMenu.menuVersion, data);
-          setMenu(data);
+          if (data) writeMenuCache(slug, code, version, data);
         })
         .catch(() => {});
-    },
-    [frenchMenu, slug]
-  );
+    }
+  }, [slug]);
 
   useEffect(() => {
-    const version = frenchMenu.menuVersion;
-    const timer = window.setTimeout(() => {
-      for (const { code } of LOCALES) {
-        if (code === "fr") continue;
-        if (readMenuCache(slug, code, version)) continue;
-        fetch(`/api/menu/${slug}?locale=${code}`, { cache: "force-cache" })
-          .then((res) => (res.ok ? res.json() : null))
-          .then((data: MenuData | null) => {
-            if (data) writeMenuCache(slug, code, version, data);
-          })
-          .catch(() => {});
-      }
-    }, 400);
+    const timer = window.setTimeout(prefetchLocales, 400);
     return () => window.clearTimeout(timer);
-  }, [slug, frenchMenu.menuVersion]);
+  }, [prefetchLocales, frenchMenu.menuVersion]);
 
-  return (
-    <MenuView
-      slug={slug}
-      locale={locale}
-      menu={menu}
-      onLocaleChange={changeLocale}
-    />
-  );
+  return <MenuView slug={slug} locale={locale} menu={menu} />;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { LOCALES, type Locale, isLocale } from "@/lib/i18n/locales";
 import { tUi } from "@/lib/i18n/ui";
 
@@ -11,22 +12,19 @@ function menuHref(slug: string, code: Locale): string {
 type Props = {
   slug: string;
   locale: Locale;
-  onLocaleChange?: (locale: Locale) => void;
 };
 
 /**
- * Native <select> stretched over the visible label — opens the OS language
- * picker on iPhone/Android (custom buttons/menus often ignore touches).
+ * Native <select> over the visible label — opens the OS picker on mobile.
+ * Navigates on change so language sticks on iPhone (client state often resets).
  */
-export function LanguagePicker({ slug, locale, onLocaleChange }: Props) {
+export function LanguagePicker({ slug, locale }: Props) {
+  const busyRef = useRef(false);
   const current = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
 
-  function handleChange(code: string) {
-    if (!isLocale(code)) return;
-    if (onLocaleChange) {
-      onLocaleChange(code);
-      return;
-    }
+  function applyLocale(code: string) {
+    if (!isLocale(code) || code === locale || busyRef.current) return;
+    busyRef.current = true;
     window.location.assign(menuHref(slug, code));
   }
 
@@ -45,7 +43,8 @@ export function LanguagePicker({ slug, locale, onLocaleChange }: Props) {
         </span>
         <select
           value={locale}
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={(e) => applyLocale(e.target.value)}
+          onInput={(e) => applyLocale(e.currentTarget.value)}
           aria-label={tUi("tapLanguage", locale)}
           className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
           style={{ WebkitAppearance: "none", appearance: "none", fontSize: 16 }}

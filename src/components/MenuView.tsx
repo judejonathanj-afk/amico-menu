@@ -22,10 +22,9 @@ type Props = {
   slug: string;
   locale: Locale;
   menu: MenuData;
-  onLocaleChange?: (locale: Locale) => void;
 };
 
-export function MenuView({ slug, locale, menu, onLocaleChange }: Props) {
+export function MenuView({ slug, locale, menu }: Props) {
   const grouped = menu.categories.reduce<Record<string, MenuCategory[]>>(
     (acc, cat) => {
       const key = cat.groupLabel ?? cat.name;
@@ -50,11 +49,7 @@ export function MenuView({ slug, locale, menu, onLocaleChange }: Props) {
           <h1 className="font-serif text-3xl tracking-wide text-white mt-1 sm:text-4xl">
             {menu.name}
           </h1>
-          <LanguagePicker
-            slug={slug}
-            locale={locale}
-            onLocaleChange={onLocaleChange}
-          />
+          <LanguagePicker slug={slug} locale={locale} />
           <p className="text-sm text-blue-100/90 mt-1">
             {tUi("menuSubtitle", locale)}
           </p>

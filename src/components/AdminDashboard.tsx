@@ -74,8 +74,11 @@ export function AdminDashboard({ restaurantName }: { restaurantName: string }) {
   }
 
   async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/admin/login");
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    window.location.assign("/admin/login");
   }
 
   async function handleItemSubmit(e: FormEvent<HTMLFormElement>, item: MenuItem) {

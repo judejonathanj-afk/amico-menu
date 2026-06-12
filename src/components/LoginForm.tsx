@@ -1,10 +1,8 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export function LoginForm() {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -17,19 +15,20 @@ export function LoginForm() {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         slug: fd.get("slug"),
         password: fd.get("password"),
       }),
     });
 
-    setLoading(false);
     if (res.ok) {
-      router.push("/admin");
-      router.refresh();
+      // Full page load so Safari persists the session cookie before /admin
+      window.location.assign("/admin");
       return;
     }
 
+    setLoading(false);
     const data = await res.json();
     setError(data.error ?? "Erreur de connexion");
   }
@@ -42,6 +41,7 @@ export function LoginForm() {
           name="slug"
           defaultValue="amico"
           required
+          autoComplete="username"
           className="w-full border border-stone-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b3a2a]/40"
           placeholder="amico"
         />
@@ -52,17 +52,20 @@ export function LoginForm() {
           name="password"
           type="password"
           required
+          autoComplete="current-password"
           className="w-full border border-stone-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b3a2a]/40"
           placeholder="••••••••"
         />
       </div>
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
+          {error}
+        </p>
       )}
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#8b3a2a] hover:bg-[#a04532] text-white font-medium py-3 rounded-xl disabled:opacity-50 transition-colors"
+        className="w-full bg-[#8b3a2a] hover:bg-[#a04532] text-white font-medium py-3 rounded-xl disabled:opacity-50 transition-colors touch-manipulation min-h-[48px]"
       >
         {loading ? "Connexion…" : "Se connecter"}
       </button>

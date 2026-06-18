@@ -1,8 +1,8 @@
 "use client";
 
 import { loginAction, type LoginState } from "@/app/admin/login/actions";
-import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -18,7 +18,7 @@ function SubmitButton() {
 }
 
 export function LoginForm() {
-  const [state, formAction] = useFormState<LoginState, FormData>(
+  const [state, formAction] = useActionState<LoginState, FormData>(
     loginAction,
     {}
   );

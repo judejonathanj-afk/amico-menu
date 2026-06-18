@@ -42,7 +42,7 @@ export function AdminDashboard({ restaurantName }: { restaurantName: string }) {
   const [message, setMessage] = useState("");
 
   const load = useCallback(async () => {
-    const res = await fetch("/api/admin/menu");
+    const res = await fetch("/api/admin/menu", { credentials: "include" });
     if (res.status === 401) {
       router.push("/admin/login");
       return;
@@ -62,6 +62,7 @@ export function AdminDashboard({ restaurantName }: { restaurantName: string }) {
     const res = await fetch("/api/admin/menu", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ action, ...payload }),
     });
     setSaving(false);

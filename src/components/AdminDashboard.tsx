@@ -227,7 +227,7 @@ export function AdminDashboard({ restaurantName }: { restaurantName: string }) {
 
       <main className="max-w-3xl mx-auto px-4 py-8 space-y-10">
         <section className="bg-white rounded-2xl shadow-sm p-6 border border-stone-200">
-          <h2 className="font-serif text-2xl text-[#8b3a2a] mb-4">Plats du jour</h2>
+          <h2 className="font-serif text-2xl text-[#8b3a2a] mb-4">Salades/ Pinsa</h2>
           <p className="text-sm text-stone-500 mb-4">
             Affichés en tête du menu client. Supprimez ou désactivez quand le service est terminé.
           </p>
@@ -293,7 +293,7 @@ export function AdminDashboard({ restaurantName }: { restaurantName: string }) {
             onSubmit={(e) => handleDailySubmit(e)}
             className="border-2 border-dashed border-[#8b3a2a]/30 rounded-xl p-4 space-y-3"
           >
-            <p className="text-sm font-medium text-[#8b3a2a]">+ Nouveau plat du jour</p>
+            <p className="text-sm font-medium text-[#8b3a2a]">+ Nouvelle salade / pinsa</p>
             <div className="grid gap-3 sm:grid-cols-2">
               <input
                 name="name"
@@ -323,7 +323,7 @@ export function AdminDashboard({ restaurantName }: { restaurantName: string }) {
               disabled={saving}
               className="bg-[#2c1810] text-white text-sm px-4 py-2 rounded-lg disabled:opacity-50"
             >
-              Ajouter le plat du jour
+              Ajouter
             </button>
           </form>
         </section>

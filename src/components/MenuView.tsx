@@ -59,7 +59,7 @@ export function MenuView({ slug, locale, menu }: Props) {
           {menu.dailySpecials.length > 0 && (
             <section className={`${cardClass} border-[#2563eb]/25`}>
               <h2 className="font-bold text-xl text-[#2563eb] mb-4 flex items-center gap-2 sm:text-2xl">
-                <CategoryIcon name="Plats du jour" />
+                <CategoryIcon name={tUi("dailySpecials", locale)} />
                 <span className="underline decoration-[#2563eb] decoration-2 underline-offset-4">
                   {tUi("dailySpecials", locale)}
                 </span>

@@ -13,6 +13,18 @@ const UI = {
     nl: "Italiaans restaurant",
     ru: "Итальянский ресторан",
   },
+  menuLabel: {
+    fr: "Menu",
+    en: "Menu",
+    de: "Menü",
+    ar: "القائمة",
+    it: "Menu",
+    es: "Menú",
+    sv: "Meny",
+    pt: "Menu",
+    nl: "Menu",
+    ru: "Меню",
+  },
   menuSubtitle: {
     fr: "Carte & boissons",
     en: "Menu & drinks",

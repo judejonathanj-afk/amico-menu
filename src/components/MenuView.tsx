@@ -121,7 +121,7 @@ export function MenuView({ slug, locale, menu }: Props) {
           <div className="pointer-events-none absolute inset-x-0 flex justify-center px-16">
             <div className="pointer-events-auto flex flex-col items-center text-center">
               <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-stone-500">
-                {tUi("restaurantType", locale)}
+                {tUi("menuLabel", locale)}
               </p>
               <h1 className="mt-1 font-serif text-2xl leading-none tracking-wide text-[#2563eb] uppercase sm:text-3xl">
                 {menu.name}

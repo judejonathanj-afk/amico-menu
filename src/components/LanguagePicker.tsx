@@ -19,7 +19,7 @@ export function LanguagePicker({ slug, locale }: Props) {
     <details className="language-picker group relative z-[300]">
       <summary
         aria-label={tUi("chooseLanguage", locale)}
-        className="language-picker-trigger flex cursor-pointer list-none items-center gap-2 rounded-full border border-stone-200/80 bg-white/90 px-3 py-2 text-sm font-medium text-[#1a3c34] shadow-sm backdrop-blur-sm [&::-webkit-details-marker]:hidden"
+        className="language-picker-trigger flex cursor-pointer list-none items-center gap-2 rounded-full border border-stone-200/80 bg-white/90 px-3 py-2 text-sm font-medium text-[#2563eb] shadow-sm backdrop-blur-sm [&::-webkit-details-marker]:hidden"
       >
         <span className="text-base leading-none" aria-hidden>
           {current.flag}
@@ -51,7 +51,7 @@ export function LanguagePicker({ slug, locale }: Props) {
               aria-current={active ? "page" : undefined}
               className={`flex items-center gap-3 px-3 py-2.5 text-sm no-underline transition-colors ${
                 active
-                  ? "bg-[#1a3c34]/8 font-semibold text-[#1a3c34]"
+                  ? "bg-[#2563eb]/8 font-semibold text-[#2563eb]"
                   : "text-stone-700 hover:bg-stone-50"
               }`}
             >

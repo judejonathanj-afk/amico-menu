@@ -22,7 +22,7 @@ export function PriceDisplay({
 
   if (primary && secondary) {
     return (
-      <span className={`whitespace-nowrap font-medium ${className || "text-[#1a3c34]"}`}>
+      <span className={`whitespace-nowrap font-medium ${className || "text-[#2563eb]"}`}>
         {primary} <span className="text-stone-400 font-normal">/</span> {secondary}
         <span className="block text-[10px] uppercase tracking-wider text-stone-500 font-normal">
           {glassLabel} / {priceSecondaryLabel ?? "bouteille"}
@@ -36,7 +36,7 @@ export function PriceDisplay({
     !primary && secondary ? (priceSecondaryLabel ?? "bouteille") : null;
 
   return (
-    <span className={`whitespace-nowrap font-medium ${className || "text-[#1a3c34]"}`}>
+    <span className={`whitespace-nowrap font-medium ${className || "text-[#2563eb]"}`}>
       {single}
       {label && (
         <span className="block text-[10px] uppercase tracking-wider text-stone-500 font-normal">

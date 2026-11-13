@@ -3,10 +3,10 @@
 @source "../";
 
 :root {
-  --background: #f4f7f5;
-  --foreground: #1a3c34;
-  --amico-green: #1a3c34;
-  --amico-green-soft: #e8f0ec;
+  --background: #f5f8ff;
+  --foreground: #0f172a;
+  --amico-blue: #2563eb;
+  --amico-blue-soft: #dbeafe;
 }
 
 @theme inline {

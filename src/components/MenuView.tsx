@@ -11,8 +11,8 @@ function MenuBackground() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div className="menu-bg-image absolute inset-[-8%] sm:inset-[-5%]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#eef5f1]/80 via-[#f7faf8]/92 to-[#f4f7f5]" />
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#1a3c34]/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#eff6ff]/80 via-[#f8fafc]/92 to-[#f5f8ff]" />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#2563eb]/10 to-transparent" />
       <div className="absolute -bottom-8 -right-10 h-40 w-40 rounded-full bg-[#c8102e]/10 blur-2xl" />
       <div className="absolute bottom-10 right-8 h-24 w-24 rounded-full bg-[#009246]/15 blur-xl" />
     </div>
@@ -109,7 +109,7 @@ export function MenuView({ slug, locale, menu }: Props) {
       <MenuBackground />
 
       <div className="relative z-10 mx-auto w-full max-w-2xl px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
-        <header className="sticky top-0 z-50 -mx-4 mb-1 flex items-center justify-between gap-3 bg-[#f4f7f5]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+        <header className="sticky top-0 z-50 -mx-4 mb-1 flex items-center justify-between gap-3 bg-[#f5f8ff]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <img
@@ -123,7 +123,7 @@ export function MenuView({ slug, locale, menu }: Props) {
                 <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-stone-500">
                   {tUi("restaurantType", locale)}
                 </p>
-                <h1 className="font-serif text-2xl leading-none tracking-wide text-[#1a3c34] sm:text-3xl">
+                <h1 className="font-serif text-2xl leading-none tracking-wide text-[#2563eb] sm:text-3xl">
                   {menu.name}
                 </h1>
                 <div
@@ -144,7 +144,7 @@ export function MenuView({ slug, locale, menu }: Props) {
             <LanguagePicker slug={slug} locale={locale} />
             <a
               href="#carte"
-              className="hidden items-center gap-1.5 rounded-full border border-stone-200/80 bg-white/90 px-3 py-2 text-sm font-medium text-[#1a3c34] shadow-sm no-underline backdrop-blur-sm sm:inline-flex"
+              className="hidden items-center gap-1.5 rounded-full border border-stone-200/80 bg-white/90 px-3 py-2 text-sm font-medium text-[#2563eb] shadow-sm no-underline backdrop-blur-sm sm:inline-flex"
             >
               <span aria-hidden>📖</span>
               {tUi("menuSubtitle", locale)}
@@ -199,7 +199,7 @@ export function MenuView({ slug, locale, menu }: Props) {
             >
               {drinkCategories.map((category) => (
                 <div key={category.id} className="mb-4 last:mb-0">
-                  <h3 className="mb-1 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-[#1a3c34]">
+                  <h3 className="mb-1 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-[#2563eb]">
                     <CategoryIcon name={category.name} />
                     {category.name}
                   </h3>
@@ -221,7 +221,7 @@ export function MenuView({ slug, locale, menu }: Props) {
         <footer className="mt-8 flex justify-center pb-4">
           <p className="inline-flex items-center gap-2 rounded-full border border-stone-200/80 bg-white/90 px-4 py-2 text-xs text-stone-600 shadow-sm backdrop-blur-sm">
             <span
-              className="flex h-5 w-5 items-center justify-center rounded-full bg-[#1a3c34] text-[10px] font-bold text-white"
+              className="flex h-5 w-5 items-center justify-center rounded-full bg-[#2563eb] text-[10px] font-bold text-white"
               aria-hidden
             >
               i
@@ -251,9 +251,9 @@ function MenuSection({
   return (
     <section
       id={id}
-      className="scroll-mt-36 rounded-[1.75rem] border border-white/80 bg-white/95 p-4 shadow-[0_12px_40px_rgba(26,60,52,0.08)] backdrop-blur-sm sm:p-6"
+      className="scroll-mt-36 rounded-[1.75rem] border border-white/80 bg-white/95 p-4 shadow-[0_12px_40px_rgba(37,99,235,0.08)] backdrop-blur-sm sm:p-6"
     >
-      <h2 className="mb-2 flex items-center gap-2 font-serif text-xl font-semibold text-[#1a3c34] sm:text-2xl">
+      <h2 className="mb-2 flex items-center gap-2 font-serif text-xl font-semibold text-[#2563eb] sm:text-2xl">
         <span aria-hidden>{icon}</span>
         {title}
       </h2>

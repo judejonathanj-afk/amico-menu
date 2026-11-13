@@ -116,9 +116,21 @@ export function MenuView({ slug, locale, menu }: Props) {
                 {tUi("restaurantType", locale)}
               </p>
               <div className="mt-1 flex items-center justify-center gap-2">
-                <h1 className="font-serif text-2xl leading-none tracking-wide text-[#2563eb] uppercase sm:text-3xl">
-                  {menu.name}
-                </h1>
+                <div className="flex flex-col items-center">
+                  <h1 className="font-serif text-2xl leading-none tracking-wide text-[#2563eb] uppercase sm:text-3xl">
+                    {menu.name}
+                  </h1>
+                  <div
+                    className="mt-1.5 h-[3px] w-full overflow-hidden rounded-full"
+                    aria-hidden
+                  >
+                    <div className="flex h-full w-full">
+                      <span className="flex-1 bg-[#009246]" />
+                      <span className="flex-1 bg-white" />
+                      <span className="flex-1 bg-[#ce2b37]" />
+                    </div>
+                  </div>
+                </div>
                 <img
                   src="/amico-logo.png"
                   alt="Amico"
@@ -126,16 +138,6 @@ export function MenuView({ slug, locale, menu }: Props) {
                   height={36}
                   className="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-black/10"
                 />
-              </div>
-              <div
-                className="mt-1.5 h-[3px] w-14 overflow-hidden rounded-full"
-                aria-hidden
-              >
-                <div className="flex h-full w-full">
-                  <span className="flex-1 bg-[#009246]" />
-                  <span className="flex-1 bg-white" />
-                  <span className="flex-1 bg-[#ce2b37]" />
-                </div>
               </div>
             </div>
           </div>

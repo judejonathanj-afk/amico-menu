@@ -5,41 +5,20 @@ const prisma = new PrismaClient();
 
 const FOOD_CATEGORIES = [
   {
-    name: "Entrées",
+    name: "Antipasti",
     sortOrder: 1,
     items: [
-      { name: "Burrata des fouilles et tomates", price: 12 },
+      { name: "Aubergines gratinées Parmigiana", price: 10 },
+      { name: "Burrata des Pouilles et tomates", price: 12 },
+      { name: "Carpaccio de bresaola", price: 13 },
+      { name: "Vitello all tonato", price: 12 },
       {
-        name: "Salade Del Mar",
-        description: "poulpe, calamar, crevette",
+        name: "Jambon de Parme croustini ail doux",
         price: 14,
       },
-      {
-        name: "Carpaccio de bresaola",
-        description: "roquette, parmesan",
-        price: 13,
-      },
-      {
-        name: "Jambon de parme",
-        description: "(vitello) croustini ail doux",
-        price: 15,
-      },
-      {
-        name: "Antipasti mixte",
-        description: "légumes grillés, stracciatella",
-        price: 12,
-      },
-      {
-        name: "Arancini",
-        description: "boulette de riz, boeuf, sauce tomate",
-        price: 12,
-      },
-      {
-        name: "Salade caprese de bufala 125g",
-        description: "roquette, tomates, huile d'olive",
-        price: 12,
-      },
-      { name: "Vitello al Tonato", price: 14 },
+      { name: "Antipasti mixte", price: 11 },
+      { name: "Velouté ou minestrone du Jour", price: 10 },
+      { name: "Aranchini du moment", price: 10 },
     ],
   },
   {
@@ -48,17 +27,17 @@ const FOOD_CATEGORIES = [
     items: [
       {
         name: "Amatriciana",
-        description: "guanciale, tomate, pecorino romano",
+        description: "guanciale, tomate, pecorino",
         price: 17,
       },
       {
         name: "Carbonara",
-        description: "paccheri, oeuf, guanciale, parmesan",
+        description: "oeuf, guanciale, parmesan",
         price: 17,
       },
       {
-        name: "Caccio e pepe",
-        description: "paccheri, pecorino romano poivre noir",
+        name: "Cacio e pepe",
+        description: "pecorino romano, poivre noir",
         price: 16,
       },
     ],
@@ -68,7 +47,7 @@ const FOOD_CATEGORIES = [
     sortOrder: 3,
     items: [
       {
-        name: "Raviolis ricotta et épinards",
+        name: "Raviolis ricotta et épinard",
         description: "crème de truffe",
         price: 22,
       },
@@ -82,38 +61,19 @@ const FOOD_CATEGORIES = [
         description: "Gambas, St Jacques",
         price: 22,
       },
-      { name: "Cavatapis aux figues et foie gras", price: 22 },
-      { name: "Poulpe à la luciana", price: 28 },
+      { name: "Risotto du moment", price: 22 },
     ],
   },
   {
-    name: "Viandes",
+    name: "Les plats",
     sortOrder: 4,
     items: [
-      { name: "Milanaise de Veau à la Sauge", price: 28 },
-      { name: "Tartare à l'italienne", price: 19 },
+      { name: "Osso bucco à la napolitaine", price: 22 },
+      { name: "Cocotte de boeuf Bourguignon", price: 21 },
+      { name: "Carré de porc aux lentilles", price: 19 },
     ],
   },
 ];
-
-const DESSERTS = {
-  name: "Desserts",
-  sortOrder: 5,
-  items: [
-    { name: "Tiramisu café & cacao", price: 9 },
-    {
-      name: "Baba au rhum",
-      description: "chantilly mascarpone, gousses de vanille",
-      price: 9,
-    },
-    {
-      name: "Panna cotta",
-      description: "fruits rouges, pistache concassée",
-      price: 9,
-    },
-  ],
-};
-
 
 async function main() {
   const restaurant = await prisma.restaurant.findUnique({
@@ -125,15 +85,25 @@ async function main() {
     throw new Error("Restaurant amico introuvable");
   }
 
+  const removeNames = new Set([
+    "Entrées",
+    "Pasta di Roma",
+    "Spécialités",
+    "Viandes",
+    "Antipasti",
+    "Les plats",
+  ]);
+
   const toDelete = restaurant.categories.filter((c) => {
     if (c.groupLabel === "Vins & boissons") return false;
     if (c.name === "Desserts") return false;
     if (c.name === "A partager") return false;
-    return true;
+    return removeNames.has(c.name);
   });
 
   for (const cat of toDelete) {
     await prisma.category.delete({ where: { id: cat.id } });
+    console.log("Supprimé:", cat.name);
   }
 
   for (const cat of FOOD_CATEGORIES) {
@@ -152,26 +122,7 @@ async function main() {
         },
       },
     });
-  }
-
-  const hasDesserts = restaurant.categories.some((c) => c.name === "Desserts");
-  if (!hasDesserts) {
-    await prisma.category.create({
-      data: {
-        restaurantId: restaurant.id,
-        name: DESSERTS.name,
-        sortOrder: DESSERTS.sortOrder,
-        items: {
-          create: DESSERTS.items.map((item, i) => ({
-            name: item.name,
-            description: item.description ?? null,
-            price: item.price,
-            sortOrder: i,
-          })),
-        },
-      },
-    });
-    console.log("Section Desserts restaurée");
+    console.log("Créé:", cat.name, `(${cat.items.length} plats)`);
   }
 
   await prisma.restaurant.update({
@@ -179,7 +130,7 @@ async function main() {
     data: { menuVersion: { increment: 1 } },
   });
 
-  console.log("Menu food mis à jour pour Amico");
+  console.log("\nMenu food mis à jour pour Amico");
 }
 
 main()

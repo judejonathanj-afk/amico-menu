@@ -97,7 +97,7 @@ export function MenuView({ slug, locale, menu }: Props) {
     navItems.push({
       id: sectionId(tUi("drinks", locale)),
       label: tUi("drinks", locale),
-      icon: "🍷",
+      icon: "🥂",
     });
   }
 
@@ -187,7 +187,7 @@ export function MenuView({ slug, locale, menu }: Props) {
             <MenuSection
               id={sectionId(tUi("drinks", locale))}
               title={tUi("drinks", locale)}
-              icon="🍷"
+              icon="🥂"
               locale={locale}
             >
               {drinkCategories.map((category) => (

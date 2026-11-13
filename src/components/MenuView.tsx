@@ -123,7 +123,7 @@ export function MenuView({ slug, locale, menu }: Props) {
                 <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-stone-500">
                   {tUi("restaurantType", locale)}
                 </p>
-                <h1 className="font-serif text-2xl leading-none tracking-wide text-[#2563eb] sm:text-3xl">
+                <h1 className="font-serif text-2xl leading-none tracking-wide text-[#2563eb] uppercase sm:text-3xl">
                   {menu.name}
                 </h1>
                 <div
@@ -142,13 +142,6 @@ export function MenuView({ slug, locale, menu }: Props) {
 
           <div className="flex shrink-0 items-center gap-2">
             <LanguagePicker slug={slug} locale={locale} />
-            <a
-              href="#carte"
-              className="hidden items-center gap-1.5 rounded-full border border-stone-200/80 bg-white/90 px-3 py-2 text-sm font-medium text-[#2563eb] shadow-sm no-underline backdrop-blur-sm sm:inline-flex"
-            >
-              <span aria-hidden>📖</span>
-              {tUi("menuSubtitle", locale)}
-            </a>
           </div>
         </header>
 

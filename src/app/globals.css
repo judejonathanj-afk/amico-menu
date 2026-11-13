@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
+@source "../";
+
 :root {
-  --background: #faf6f0;
-  --foreground: #2c1810;
+  --background: #f4f7f5;
+  --foreground: #1a3c34;
+  --amico-green: #1a3c34;
+  --amico-green-soft: #e8f0ec;
 }
 
 @theme inline {

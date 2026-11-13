@@ -109,35 +109,32 @@ export function MenuView({ slug, locale, menu }: Props) {
       <MenuBackground />
 
       <div className="relative z-10 mx-auto w-full max-w-2xl px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
-        <header className="sticky top-0 z-50 -mx-4 mb-1 flex items-center justify-end bg-[#f5f8ff]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+        <header className="sticky top-0 z-50 -mx-4 mb-1 flex items-center justify-between bg-[#f5f8ff]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+          <img
+            src="/amico-logo.png"
+            alt="Amico"
+            width={40}
+            height={40}
+            className="relative z-10 h-10 w-10 shrink-0 rounded-full object-cover shadow-sm ring-1 ring-black/10"
+          />
+
           <div className="pointer-events-none absolute inset-x-0 flex justify-center px-16">
             <div className="pointer-events-auto flex flex-col items-center text-center">
               <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-stone-500">
                 {tUi("restaurantType", locale)}
               </p>
-              <div className="mt-1 flex items-center justify-center gap-2">
-                <div className="flex flex-col items-center">
-                  <h1 className="font-serif text-2xl leading-none tracking-wide text-[#2563eb] uppercase sm:text-3xl">
-                    {menu.name}
-                  </h1>
-                  <div
-                    className="mt-1.5 h-[3px] w-full overflow-hidden rounded-full"
-                    aria-hidden
-                  >
-                    <div className="flex h-full w-full">
-                      <span className="flex-1 bg-[#009246]" />
-                      <span className="flex-1 bg-white" />
-                      <span className="flex-1 bg-[#ce2b37]" />
-                    </div>
-                  </div>
+              <h1 className="mt-1 font-serif text-2xl leading-none tracking-wide text-[#2563eb] uppercase sm:text-3xl">
+                {menu.name}
+              </h1>
+              <div
+                className="mt-1.5 h-[3px] w-16 overflow-hidden rounded-full sm:w-20"
+                aria-hidden
+              >
+                <div className="flex h-full w-full">
+                  <span className="flex-1 bg-[#009246]" />
+                  <span className="flex-1 bg-white" />
+                  <span className="flex-1 bg-[#ce2b37]" />
                 </div>
-                <img
-                  src="/amico-logo.png"
-                  alt="Amico"
-                  width={36}
-                  height={36}
-                  className="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-black/10"
-                />
               </div>
             </div>
           </div>

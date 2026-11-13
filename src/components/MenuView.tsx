@@ -28,32 +28,17 @@ function sectionId(label: string) {
     .replace(/(^-|-$)/g, "")}`;
 }
 
-function DishThumb({ name, icon }: { name: string; icon: string }) {
-  return (
-    <div
-      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.6rem] bg-gradient-to-br from-[#e8f0ec] to-[#d5e4dc] text-2xl shadow-inner ring-1 ring-white/80 sm:h-16 sm:w-16"
-      aria-hidden
-      title={name}
-    >
-      {icon}
-    </div>
-  );
-}
-
 function DishRow({
   item,
-  icon,
   glassLabel,
 }: {
   item: MenuItem | { id: string; name: string; description: string | null; price: number | null };
-  icon: string;
   glassLabel?: string;
 }) {
   const withSecondary = "priceSecondary" in item ? item : null;
 
   return (
-    <li className="flex items-center gap-3 border-b border-stone-100 py-3.5 last:border-b-0 sm:gap-4 sm:py-4">
-      <DishThumb name={item.name} icon={icon} />
+    <li className="flex items-start justify-between gap-3 border-b border-stone-100 py-3.5 last:border-b-0 sm:py-4">
       <div className="min-w-0 flex-1">
         <p className="font-semibold leading-snug text-stone-900">{item.name}</p>
         {item.description && (
@@ -178,7 +163,7 @@ export function MenuView({ slug, locale, menu }: Props) {
             >
               <ul>
                 {menu.dailySpecials.map((item) => (
-                  <DishRow key={item.id} item={item} icon="🥗" />
+                  <DishRow key={item.id} item={item} />
                 ))}
               </ul>
             </MenuSection>
@@ -197,7 +182,6 @@ export function MenuView({ slug, locale, menu }: Props) {
                   <DishRow
                     key={item.id}
                     item={item}
-                    icon={iconFor(category.name)}
                     glassLabel={tUi("glass", locale)}
                   />
                 ))}
@@ -223,7 +207,6 @@ export function MenuView({ slug, locale, menu }: Props) {
                       <DishRow
                         key={item.id}
                         item={item}
-                        icon={iconFor(category.name)}
                         glassLabel={tUi("glass", locale)}
                       />
                     ))}

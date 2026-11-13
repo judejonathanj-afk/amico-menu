@@ -10,11 +10,8 @@ import type { MenuData, MenuItem } from "@/lib/menu-types";
 function MenuBackground() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div className="menu-bg-image absolute inset-[-8%] sm:inset-[-5%]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#eff6ff]/80 via-[#f8fafc]/92 to-[#f5f8ff]" />
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#2563eb]/10 to-transparent" />
-      <div className="absolute -bottom-8 -right-10 h-40 w-40 rounded-full bg-[#c8102e]/10 blur-2xl" />
-      <div className="absolute bottom-10 right-8 h-24 w-24 rounded-full bg-[#009246]/15 blur-xl" />
+      <div className="menu-bg-image absolute inset-[-8%] opacity-40 sm:inset-[-5%]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-[#f8fafc]" />
     </div>
   );
 }
@@ -109,7 +106,7 @@ export function MenuView({ slug, locale, menu }: Props) {
       <MenuBackground />
 
       <div className="relative z-10 mx-auto w-full max-w-2xl px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6">
-        <header className="sticky top-0 z-50 -mx-4 mb-1 flex items-center justify-between bg-[#f5f8ff]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+        <header className="sticky top-0 z-50 -mx-4 mb-1 flex items-center justify-between bg-white/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
           <img
             src="/amico-logo.png"
             alt="Amico"

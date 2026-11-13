@@ -112,12 +112,13 @@ export function MenuView({ slug, locale, menu }: Props) {
         <header className="sticky top-0 z-50 -mx-4 mb-1 flex items-center justify-between gap-3 bg-[#f4f7f5]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1a3c34] text-sm text-white"
-                aria-hidden
-              >
-                🍴
-              </span>
+              <img
+                src="/amico-logo.png"
+                alt="Amico"
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-black/10"
+              />
               <div className="min-w-0">
                 <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-stone-500">
                   {tUi("restaurantType", locale)}
